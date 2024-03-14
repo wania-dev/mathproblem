@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>door a,b, ya c</title>
+</head>
+<body>
+    
+    <h2>
+        door a and b and c are to be opened <br>
+one of them contains a car <br>
+the other two contain khwari <br>
+you chose door c <br>
+but <br>
+door a is opened to reveal khwari? <br>
+would you stick to your door (which is c) or switch to door b? <br>
+
+<form id="montyHallForm">
+    <label for="switchDoor">Switch Door?</label>
+    <select id="switchDoor" name="switchDoor">
+        <option value="true">True</option>
+        <option value="false">False</option>
+    </select>
+    <br>
+    <p style="font-size: 15px;">let's see what happens when the game choses to switch and not switch 10,000 times simultaneously (ik i spelled it wrong) as an experiment</p>
+    <button type="button" onclick="experiment()">experiment</button>
+</form>
+<br>
+<div id="result" style="font-size: 15px;"></div>
+
+    </h2>
+    <p>What this program does? <br>
+        the program randomly decides which door hides the car.
+        the door revealed after the original choice is one that doesnt have the car and is not the original choice itself.he isDoorSwitched parameter in the game function determines whether the player switches or not. If its true, the player switches; if its false, the player sticks with their original choice. <br> <br> the code simulates this game scenario 10,000 times to see if switching doors or sticking with the original choice yields more wins. once you hit experiment, youll notice that the no of wins where the door is switched is sig greater than the one where the door isnt switched. <br> <br> this showcases the logic behind the problem where door c initially had a probability of 1/3 of winning (like all the doors). <br><br> however when door a is revealed to contain khwari, its probability is combined with door b's and hence 1/3 + 1/3 = 2/3. <br><br> hence the probability of b winning is 2/3 compared to door c's 1/3. hence it has greater chances of winning.  </p>
+
+<code>
+    function game(originalChoice, isDoorSwitched) { <br>
+        // door array<br>
+        const doors = ['a', 'b', 'c'];<br>
+        <br>
+        // randomly assign car behind a door<br>
+        const carInDoor = doors[Math.floor(Math.random() * 3)];<br>
+        <br>
+        // revealing door that isnt original choice and doesnt have car<br>
+        let doorRevealed;<br>
+        do {<br>
+            doorRevealed = doors[Math.floor(Math.random() * 3)];<br>
+        } while (doorRevealed == originalChoice || doorRevealed == carInDoor);<br>
+        <br>
+        // checks if the user switches doors<br>
+        if (isDoorSwitched) {<br>
+            return originalChoice !== doorRevealed && doors.find(door => door !== originalChoice && door !== doorRevealed);<br>
+        } else {<br>
+            // If the user sticks with their original choice<br>
+            return originalChoice === carInDoor;<br>
+        }<br>
+    }<br>
+    function experiment() {<br>
+        let switchingWins = 0;<br>
+        let stickingWins = 0;<br>
+        for (let i = 0; i < 10000; i++) {<br>
+            if (game('c', false)) {<br>
+                stickingWins++;<br>
+            }<br>
+            else if (game('c', true)) {<br>
+                switchingWins++;<br>
+            }}<br>
+        // Display the result to the user<br>
+        document.getElementById('result').innerText = `Wins by sticking to original choice: ${stickingWins}\nWins by switching choice: ${switchingWins}`; <br>
+    }<br>
+</code>
+
+    <script>
+
+function game(originalChoice, isDoorSwitched) {
+    // door array
+    const doors = ['a', 'b', 'c'];
+
+    // randomly assign car behind a door
+    const carInDoor = doors[Math.floor(Math.random() * 3)];
+
+    // revealing door that isnt original choice and doesnt have car
+    let doorRevealed;
+    do {
+        doorRevealed = doors[Math.floor(Math.random() * 3)];
+    } while (doorRevealed == originalChoice || doorRevealed == carInDoor);
+
+    // checks if the user switches doors
+    if (isDoorSwitched) {
+        return originalChoice !== doorRevealed && doors.find(door => door !== originalChoice && door !== doorRevealed);
+    } else {
+        // If the user sticks with their original choice
+        return originalChoice === carInDoor;
+    }
+}
+function experiment() {
+    let switchingWins = 0;
+    let stickingWins = 0;
+    for (let i = 0; i < 10000; i++) {
+        if (game('c', false)) {
+            stickingWins++;
+        }
+        else if (game('c', true)) {
+            switchingWins++;
+        }
+    }
+    // Display the result to the user
+    document.getElementById('result').innerText = `Wins by sticking to original choice: ${stickingWins}\nWins by switching choice: ${switchingWins}`; 
+}
+
+
+
+
+
+    </script>
+</body>
+</html>
